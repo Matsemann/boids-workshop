@@ -40,7 +40,7 @@ export class World2 {
             for (let i = this.predators.length; i < num; i++) {
                 const vel = new Vector2d(0, 1)
                     .rotate(randomInRange(0, 360))
-                    .mul(randomInRange(0.5, parameters.predatorMaxSpeed / 2));
+                    .mul(randomInRange(0.5, parameters.predatorMaxSpeed));
                 const pos = new Vector2d(
                     randomInRange(0, parameters.width),
                     randomInRange(0, parameters.height)

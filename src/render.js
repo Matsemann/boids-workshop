@@ -29,7 +29,7 @@ function render() {
     world.obstacles.forEach(obs => {
         ctx.beginPath();
         ctx.fillStyle = "#00ff00";
-        ctx.arc(obs.pos.x, obs.pos.y, obs.radius, 0, 2 * Math.PI);
+        ctx.arc(obs.pos.x, parameters.height - obs.pos.y, obs.radius, 0, 2 * Math.PI);
         ctx.fill();
     });
 

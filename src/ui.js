@@ -2,10 +2,10 @@ import {world} from "./world";
 
 export const parameters = {
     numBoids: 1,
-    neighborRadius: 50,
+    neighborRadius: 40,
     separationWeight: 1,
-    alignmentWeight: 0.5,
-    cohesionWeight: 0.5,
+    alignmentWeight: 1,
+    cohesionWeight: 1,
     maxSpeed: 5,
     numPredators: 1,
     predatorMaxSpeed: 2.5,
@@ -23,7 +23,7 @@ export function createUI() {
     createSlider("alignmentWeight", 0, 4, 0.01);
     createSlider("cohesionWeight", 0, 4, 0.01);
     createSlider("maxSpeed", 1, 10, 0.5);
-    createSlider("neighborRadius", 1, 300, 5);
+    createSlider("neighborRadius", 0, 100, 5);
     createSlider("numPredators", 0, 30, 1);
     createSlider("predatorMaxSpeed", 1, 10, 0.5);
     createSlider("numObstacles", 0, 30, 1);

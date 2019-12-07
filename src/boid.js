@@ -1,9 +1,6 @@
 import {Vector2d} from "./vector2d";
 import {parameters} from "./ui";
 
-const neighborRadius = 100;
-
-
 export class Boid {
 
     constructor(id, startPos, startVelocity) {
@@ -48,9 +45,9 @@ export class Boid {
     calculateForces(boids, predators, obstacles) {
         const neighbors = this.findNeighbors(boids);
 
-        const separationForce = this.calculateSeparationForce(neighbors);
-        const alignmentForce = this.calculateAlignmentForce(neighbors);
-        const cohesionForce = this.calculateCohesionForce(neighbors);
+        const separationForce = this.calculateSeparationForce(neighbors).mul(parameters.separationWeight);
+        const alignmentForce = this.calculateAlignmentForce(neighbors).mul(parameters.alignmentWeight);
+        const cohesionForce = this.calculateCohesionForce(neighbors).mul(parameters.cohesionWeight);
 
         const obstacleForce = this.calculateObstacleAvoidanceForce(obstacles);
         const predatorsForce = this.calculatePredatorAvoidanceForce(predators);
@@ -69,7 +66,7 @@ export class Boid {
      * @returns {Array<Boid>}
      */
     findNeighbors(boids) {
-        return boids.filter(b => b.pos.dst(this.pos) <= neighborRadius && b.id !== this.id);
+        return boids.filter(b => b.pos.dst(this.pos) <= parameters.neighborRadius && b.id !== this.id);
     }
 
     /**
@@ -78,8 +75,18 @@ export class Boid {
      * @returns {Vector2d}
      */
     calculateSeparationForce(neighbors) {
-        const a = new Vector2d(0, 0);
-        return new Vector2d(0, 0);
+        const separationForce = new Vector2d(0, 0);
+
+        neighbors.forEach(boid => {
+            const distanceVec = this.pos.copy().sub(boid.pos);
+            const length = distanceVec.len();
+            // if (length > parameters.neighborRadius / 2) return;
+            const weight = (parameters.neighborRadius - length) / parameters.neighborRadius;
+            distanceVec.norm().mul(weight);
+            separationForce.add(distanceVec);
+        });
+
+        return separationForce;
     }
 
     /**
@@ -88,7 +95,15 @@ export class Boid {
      * @returns {Vector2d}
      */
     calculateAlignmentForce(neighbors) {
-        return new Vector2d(0, 0);
+        const averageAlignment = new Vector2d(0, 0);
+
+        neighbors.forEach(neighbor => {
+            averageAlignment.add(neighbor.vel);
+        });
+
+        averageAlignment.norm();
+
+        return averageAlignment;
     }
 
     /**
@@ -97,7 +112,44 @@ export class Boid {
      * @returns {Vector2d}
      */
     calculateCohesionForce(neighbors) {
-        return new Vector2d(0, 0);
+        const averagePos = new Vector2d(0, 0);
+
+        if (neighbors.length !== 0) {
+            neighbors.forEach(neighbor => {
+                averagePos.add(neighbor.pos);
+            });
+            averagePos.mul(1 / neighbors.length);
+            return averagePos.sub(this.pos).norm();
+
+        } else {
+            return new Vector2d(0, 0);
+        }
+    }
+
+
+    /**
+     * @param predators {Array<Predator>}
+     * @returns {Vector2d}
+     */
+    calculatePredatorAvoidanceForce(predators) {
+
+        /*
+        A predator has two properties:
+        pos : a vector2d holding the x and y position of the predator
+        vel : the speed/direction of the predator
+         */
+        let fleeForce = new Vector2d(0, 0);
+
+        predators.forEach(predator => {
+            if (predator.pos.dst(this.pos) > 50) return;
+
+            const direction = predator.pos.copy().sub(this.pos);
+
+            fleeForce.sub(direction).norm().mul(20);
+        });
+
+
+        return fleeForce;
     }
 
 
@@ -113,24 +165,23 @@ export class Boid {
         radius : the radius/size of the obstacle from the center positions
          */
 
+        let avoidanceForce = new Vector2d(0, 0);
 
-        return new Vector2d(0, 0);
-    }
+        obstacles.forEach(obstacle => {
+            if (obstacle.pos.dst(this.pos) > 100) return;
+
+            const direction = obstacle.pos.copy().sub(this.pos);
+            const angle = direction.angle(this.vel);
+
+            if (0 < angle && angle < 60) {
+                avoidanceForce.add(this.vel.copy().rotate(60).norm().mul(5))
+            } else if (-60 < angle && angle < 0) {
+                avoidanceForce.add(this.vel.copy().rotate(-60).norm().mul(5))
+
+            }
+        });
 
 
-    /**
-     * @param obstacles {Array<Obstacle>}
-     * @returns {Vector2d}
-     */
-    calculatePredatorAvoidanceForce(obstacles) {
-
-        /*
-        A predator has two properties:
-        pos : a vector2d holding the x and y position of the predator
-        vel : the speed/direction of the predator
-         */
-
-
-        return new Vector2d(0, 0);
+        return avoidanceForce;
     }
 }
