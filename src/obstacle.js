@@ -1,5 +1,5 @@
 
-class Obstacle {
+export class Obstacle {
     constructor(pos, radius) {
         /**
          * @type {Vector2d}

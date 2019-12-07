@@ -101,7 +101,7 @@ export class Vector2d {
     }
 
     /**
-     * Angle of this vector relative to the other vector, from -PIto +PI
+     * Angle of this vector relative to the other vector, from -PI to +PI
      * @param otherVector {Vector2d}
      * @returns {Number} the angle in radians
      */

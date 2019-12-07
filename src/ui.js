@@ -41,6 +41,8 @@ function loadParameters() {
 function paramsUpdated() {
     localStorage.setItem("params", JSON.stringify(parameters));
     world.setNumBoids(parameters.numBoids);
+    world.setNumPredators(parameters.numPredators);
+    world.setNumObstacles(parameters.numObstacles);
 }
 
 function createResetButton() {
