@@ -1,0 +1,19 @@
+body {
+    background: #f8f8f8;
+}
+
+.slider {
+    padding: 10px;
+}
+.slider:nth-child(2n+1) {
+    background: #c3c3c3;
+}
+
+.slider label {
+    display: block;
+}
+
+#controls button, #fpscounter {
+    margin: 10px 10px;
+    padding: 5px;
+}
