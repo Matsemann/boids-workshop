@@ -65,9 +65,14 @@ export class World2 {
         }
     }
 
-    update() {
-        this.boids.forEach(boid => boid.move(this.boids, this.predators, this.obstacles));
-        this.predators.forEach(predator => predator.move()) // TODO
+    update(mousePos) {
+        const predators = [...this.predators];
+        if (mousePos) {
+            predators.push({pos: mousePos, vel: new Vector2d(0, 0)})
+        }
+
+        this.boids.forEach(boid => boid.move(this.boids, predators, this.obstacles));
+        this.predators.forEach(predator => predator.move())
     }
 }
 

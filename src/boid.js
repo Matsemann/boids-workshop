@@ -145,7 +145,7 @@ export class Boid {
 
             const direction = predator.pos.copy().sub(this.pos);
 
-            fleeForce.sub(direction).norm().mul(20);
+            fleeForce.sub(direction);
         });
 
 
