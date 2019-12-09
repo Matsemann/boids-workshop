@@ -10,4 +10,18 @@ export class Obstacle {
          */
         this.radius = radius;
     }
+
+    /**
+     * @return {Vector2d}
+     */
+    getPos() {
+        return this.pos.copy();
+    }
+
+    /**
+     * @return {Number}
+     */
+    getRadius() {
+        return this.radius;
+    }
 }

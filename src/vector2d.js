@@ -37,13 +37,24 @@ export class Vector2d {
     }
 
     /**
-     * Scales x and y of this vector by the factor given
+     * Scales x and y of this vector by the factor given by multiplying
      * @param scale {Number}
      * @returns {Vector2d} this updated vector for chaining
      */
     mul(scale) {
         this.x *= scale;
         this.y *= scale;
+        return this;
+    }
+
+    /**
+     * Scales x and y of this vector by the factor given by dividing
+     * @param scale {Number}
+     * @returns {Vector2d} this updated vector for chaining
+     */
+    div(scale) {
+        this.x /= scale;
+        this.y /= scale;
         return this;
     }
 

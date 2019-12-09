@@ -5,7 +5,7 @@ import {Predator} from "./predator";
 import {Obstacle} from "./obstacle";
 
 
-function randomInRange(min, max) {
+export function randomInRange(min, max) {
     return Math.random() * (max - min) + min;
 }
 
@@ -68,7 +68,7 @@ export class World2 {
     update(mousePos) {
         const predators = [...this.predators];
         if (mousePos) {
-            predators.push({pos: mousePos, vel: new Vector2d(0, 0)})
+            predators.push({getPos: () => mousePos.copy(), getVel: () => new Vector2d(0, 0)})
         }
 
         this.boids.forEach(boid => boid.move(this.boids, predators, this.obstacles));

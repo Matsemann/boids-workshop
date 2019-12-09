@@ -61,7 +61,6 @@ export class Boid {
     }
 
     /**
-     * Should return an array of all the boids inside neighborRadius of this boid
      * @param boids {Array<Boid>}
      * @returns {Array<Boid>}
      */
@@ -70,17 +69,57 @@ export class Boid {
     }
 
     /**
-     *
+     * @return {Vector2d}
+     */
+    getPos() {
+        return this.pos.copy();
+    }
+
+    /**
+     * @return {Vector2d}
+     */
+    getVel() {
+        return this.vel.copy();
+    }
+
+    /**
+     * @param neighbors {Array<Boid>}
+     * @returns {Vector2d}
+     */
+    calculateAlignmentForce(neighbors) {
+        const averageAlignment = new Vector2d(0, 0);
+
+        neighbors.forEach(neighbor => {
+            averageAlignment.add(neighbor.getVel());
+        });
+
+        averageAlignment.norm();
+
+        return averageAlignment;
+    }
+
+    /**
      * @param neighbors {Array<Boid>}
      * @returns {Vector2d}
      */
     calculateSeparationForce(neighbors) {
         const separationForce = new Vector2d(0, 0);
 
+
+        // For each neighbor
+        // find the
+        /*
         neighbors.forEach(boid => {
-            const distanceVec = this.pos.copy().sub(boid.pos);
+            let separationForceForNeighbor == ...
+              // calculate
+
+            separationForce.add(separationForceForNeighbor);
+        });
+         */
+
+        neighbors.forEach(boid => {
+            const distanceVec = this.getPos().sub(boid.getPos());
             const length = distanceVec.len();
-            // if (length > parameters.neighborRadius / 2) return;
             const weight = (parameters.neighborRadius - length) / parameters.neighborRadius;
             distanceVec.norm().mul(weight);
             separationForce.add(distanceVec);
@@ -90,40 +129,21 @@ export class Boid {
     }
 
     /**
-     *
-     * @param neighbors {Array<Boid>}
-     * @returns {Vector2d}
-     */
-    calculateAlignmentForce(neighbors) {
-        const averageAlignment = new Vector2d(0, 0);
-
-        neighbors.forEach(neighbor => {
-            averageAlignment.add(neighbor.vel);
-        });
-
-        averageAlignment.norm();
-
-        return averageAlignment;
-    }
-
-    /**
-     *
      * @param neighbors {Array<Boid>}
      * @returns {Vector2d}
      */
     calculateCohesionForce(neighbors) {
-        const averagePos = new Vector2d(0, 0);
-
-        if (neighbors.length !== 0) {
-            neighbors.forEach(neighbor => {
-                averagePos.add(neighbor.pos);
-            });
-            averagePos.mul(1 / neighbors.length);
-            return averagePos.sub(this.pos).norm();
-
-        } else {
+        if (neighbors.length === 0) {
             return new Vector2d(0, 0);
         }
+
+        const averagePos = new Vector2d(0, 0);
+        neighbors.forEach(neighbor => {
+            averagePos.add(neighbor.getPos());
+        });
+        averagePos.div(neighbors.length);
+        averagePos.sub(this.getPos()).norm();
+        return averagePos;
     }
 
 
@@ -141,15 +161,15 @@ export class Boid {
         let fleeForce = new Vector2d(0, 0);
 
         predators.forEach(predator => {
-            if (predator.pos.dst(this.pos) > 50) return;
+            if (predator.getPos().dst(this.getPos()) > 50) return;
 
-            const direction = predator.pos.copy().sub(this.pos);
+            const direction = this.getPos().sub(predator.getPos());
 
-            fleeForce.sub(direction);
+            fleeForce.add(direction);
         });
 
 
-        return fleeForce;
+        return fleeForce.norm().mul(10);
     }
 
 
@@ -168,15 +188,15 @@ export class Boid {
         let avoidanceForce = new Vector2d(0, 0);
 
         obstacles.forEach(obstacle => {
-            if (obstacle.pos.dst(this.pos) > 100) return;
+            if (obstacle.getPos().dst(this.getPos()) > 100) return;
 
-            const direction = obstacle.pos.copy().sub(this.pos);
-            const angle = direction.angle(this.vel);
+            const direction = obstacle.getPos().sub(this.getPos());
+            const angle = direction.angle(this.getVel());
 
             if (0 < angle && angle < 60) {
-                avoidanceForce.add(this.vel.copy().rotate(60).norm().mul(5))
+                avoidanceForce.add(this.getVel().rotate(60).norm().mul(5))
             } else if (-60 < angle && angle < 0) {
-                avoidanceForce.add(this.vel.copy().rotate(-60).norm().mul(5))
+                avoidanceForce.add(this.getVel().rotate(-60).norm().mul(5))
 
             }
         });

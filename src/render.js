@@ -36,7 +36,7 @@ function render() {
         drawBoid(predator, "#fd59bd", "#fdaedc");
     });
 
-        ctx.fillStyle = "#ac2fff";
+    ctx.fillStyle = "#ac2fff";
 
     world.obstacles.forEach(obs => {
         const radgrad = ctx.createRadialGradient(obs.pos.x, parameters.height - obs.pos.y, 0, obs.pos.x, parameters.height - obs.pos.y, 50);
@@ -83,11 +83,12 @@ function drawBoid(boid, color, strokeColor) {
 }
 
 let avgDelta = 0, lastRender = performance.now();
+
 function updateFps() {
     const now = performance.now();
     const delta = now - lastRender;
     const diff = delta - avgDelta;
     avgDelta += diff / 20;
     lastRender = now;
-    document.getElementById("fpscounter").innerText = (1000/avgDelta).toFixed(0) + " fps";
+    document.getElementById("fpscounter").innerText = (1000 / avgDelta).toFixed(0) + " fps";
 }

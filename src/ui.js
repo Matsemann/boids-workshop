@@ -8,7 +8,7 @@ export const parameters = {
     cohesionWeight: 1,
     maxSpeed: 5,
     numPredators: 1,
-    predatorMaxSpeed: 2.5,
+    predatorMaxSpeed: 7.5,
     numObstacles: 1,
     width: 1200,
     height: 900,
@@ -18,7 +18,7 @@ const defaults = {...parameters};
 
 export function createUI() {
     loadParameters();
-    createSlider("numBoids", 10, 2000, 10);
+    createSlider("numBoids", 1, 2000, 1);
     createSlider("separationWeight", 0, 4, 0.01);
     createSlider("alignmentWeight", 0, 4, 0.01);
     createSlider("cohesionWeight", 0, 4, 0.01);
