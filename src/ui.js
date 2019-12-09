@@ -1,7 +1,7 @@
 import {world} from "./world";
 
 export const parameters = {
-    numBoids: 1,
+    numBoids: 200,
     neighborRadius: 40,
     separationWeight: 1,
     alignmentWeight: 1,
