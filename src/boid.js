@@ -87,6 +87,19 @@ export class Boid {
      * @returns {Vector2d}
      */
     calculateAlignmentForce(neighbors) {
+
+        // TODO: Oppgave 1 løses her, se README.md for beskrivelse
+        /*
+        const averageAlignment = new Vector2d(0, 0);
+        // Se vector2d.js for operasjoner på vektorer
+
+        neighbors.forEach(neighbor => {
+            // stuff per neighbor
+        });
+
+        return averageAlignment;
+         */
+
         const averageAlignment = new Vector2d(0, 0);
 
         neighbors.forEach(neighbor => {
@@ -103,19 +116,23 @@ export class Boid {
      * @returns {Vector2d}
      */
     calculateSeparationForce(neighbors) {
+
+        // TODO Løs Oppgave 2 her
+
+        /*
         const separationForce = new Vector2d(0, 0);
 
-
-        // For each neighbor
-        // find the
-        /*
         neighbors.forEach(boid => {
             let separationForceForNeighbor == ...
               // calculate
 
             separationForce.add(separationForceForNeighbor);
         });
+
+        return separationForce;
          */
+
+        const separationForce = new Vector2d(0, 0);
 
         neighbors.forEach(boid => {
             const distanceVec = this.getPos().sub(boid.getPos());
@@ -133,8 +150,24 @@ export class Boid {
      * @returns {Vector2d}
      */
     calculateCohesionForce(neighbors) {
+
+        /*
+        const cohesionForce = new Vector2d(0, 0);
+
         if (neighbors.length === 0) {
-            return new Vector2d(0, 0);
+            return cohesionForce
+        }
+
+        // TODO Oppgave 3 gjøres her
+        // ...
+
+        return cohesionForce;
+         */
+
+        const cohesionForce = new Vector2d(0, 0);
+
+        if (neighbors.length === 0) {
+            return cohesionForce
         }
 
         const averagePos = new Vector2d(0, 0);
@@ -142,8 +175,8 @@ export class Boid {
             averagePos.add(neighbor.getPos());
         });
         averagePos.div(neighbors.length);
-        averagePos.sub(this.getPos()).norm();
-        return averagePos;
+        cohesionForce.add(averagePos.sub(this.getPos()).norm());
+        return cohesionForce;
     }
 
 
@@ -154,10 +187,17 @@ export class Boid {
     calculatePredatorAvoidanceForce(predators) {
 
         /*
-        A predator has two properties:
-        pos : a vector2d holding the x and y position of the predator
-        vel : the speed/direction of the predator
+        // TODO oppgave 4 gjøres her
+
+        let fleeForce = new Vector2d(0, 0);
+
+        // predators.forEache(predator => ...);
+        // predator.getPos()
+
+
+        return fleeForce;
          */
+
         let fleeForce = new Vector2d(0, 0);
 
         predators.forEach(predator => {
@@ -180,9 +220,15 @@ export class Boid {
     calculateObstacleAvoidanceForce(obstacles) {
 
         /*
-        An obstacle has two properties:
-        pos : a vector2d holding the x and y position of the center of the obstacle
-        radius : the radius/size of the obstacle from the center positions
+        // TODO Oppgave 5 gjøres her
+
+        let avoidanceForce = new Vector2d(0, 0);
+
+        // obstacles.forEach(obstacle => ...);
+        // obstacle.getPos();
+
+        return avoidanceForce;
+
          */
 
         let avoidanceForce = new Vector2d(0, 0);
