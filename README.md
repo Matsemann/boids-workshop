@@ -1,6 +1,9 @@
 
 # Boids workshop
 
+Test den her:
+https://matsemann.github.io/boids-workshop/
+
 Vi skal lage BOIDS, som betyr bird-oid object, eller et bird-like object.
 
 Se PDFene for en intro.
@@ -45,7 +48,7 @@ Sjekk ut toppen av `ui.js`, der har man verdiene for de forskjellige sliderne, s
 
 ### 1. Alignment
 
-Dette er å beregne retningen nabo-boidene rundt har, og så tilpasse seg det.
+Dette er å beregne retningen nabo-boidene rundt har, og så tilpasse seg det. Endre `calculateAlignmentForce(...)` i `src/boid.js`
 
 Det man gjør er å finne gjennomsnitts-retningen til boidene rundt seg:
  * Så for hver nabo-boid, legg til nabo-boidens fartsvektor (`.getVel()`) i averageAlignment-vektoren (`.add(...)`).

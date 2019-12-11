@@ -89,24 +89,13 @@ export class Boid {
     calculateAlignmentForce(neighbors) {
 
         // TODO: Oppgave 1 løses her, se README.md for beskrivelse
-        /*
+
         const averageAlignment = new Vector2d(0, 0);
         // Se vector2d.js for operasjoner på vektorer
 
         neighbors.forEach(neighbor => {
             // stuff per neighbor
         });
-
-        return averageAlignment;
-         */
-
-        const averageAlignment = new Vector2d(0, 0);
-
-        neighbors.forEach(neighbor => {
-            averageAlignment.add(neighbor.getVel());
-        });
-
-        averageAlignment.norm();
 
         return averageAlignment;
     }
@@ -119,27 +108,14 @@ export class Boid {
 
         // TODO Løs Oppgave 2 her
 
-        /*
+
         const separationForce = new Vector2d(0, 0);
 
         neighbors.forEach(boid => {
-            let separationForceForNeighbor == ...
+            //let separationForceForNeighbor == ...
               // calculate
 
-            separationForce.add(separationForceForNeighbor);
-        });
-
-        return separationForce;
-         */
-
-        const separationForce = new Vector2d(0, 0);
-
-        neighbors.forEach(boid => {
-            const distanceVec = this.getPos().sub(boid.getPos());
-            const length = distanceVec.len();
-            const weight = (parameters.neighborRadius - length) / parameters.neighborRadius;
-            distanceVec.norm().mul(weight);
-            separationForce.add(distanceVec);
+            //separationForce.add(separationForceForNeighbor);
         });
 
         return separationForce;
@@ -151,31 +127,15 @@ export class Boid {
      */
     calculateCohesionForce(neighbors) {
 
-        /*
         const cohesionForce = new Vector2d(0, 0);
 
         if (neighbors.length === 0) {
-            return cohesionForce
+            return cohesionForce;
         }
 
         // TODO Oppgave 3 gjøres her
         // ...
 
-        return cohesionForce;
-         */
-
-        const cohesionForce = new Vector2d(0, 0);
-
-        if (neighbors.length === 0) {
-            return cohesionForce
-        }
-
-        const averagePos = new Vector2d(0, 0);
-        neighbors.forEach(neighbor => {
-            averagePos.add(neighbor.getPos());
-        });
-        averagePos.div(neighbors.length);
-        cohesionForce.add(averagePos.sub(this.getPos()).norm());
         return cohesionForce;
     }
 
@@ -185,8 +145,6 @@ export class Boid {
      * @returns {Vector2d}
      */
     calculatePredatorAvoidanceForce(predators) {
-
-        /*
         // TODO oppgave 4 gjøres her
 
         let fleeForce = new Vector2d(0, 0);
@@ -196,20 +154,6 @@ export class Boid {
 
 
         return fleeForce;
-         */
-
-        let fleeForce = new Vector2d(0, 0);
-
-        predators.forEach(predator => {
-            if (predator.getPos().dst(this.getPos()) > 50) return;
-
-            const direction = this.getPos().sub(predator.getPos());
-
-            fleeForce.add(direction);
-        });
-
-
-        return fleeForce.norm().mul(10);
     }
 
 
@@ -219,7 +163,6 @@ export class Boid {
      */
     calculateObstacleAvoidanceForce(obstacles) {
 
-        /*
         // TODO Oppgave 5 gjøres her
 
         let avoidanceForce = new Vector2d(0, 0);
@@ -229,25 +172,5 @@ export class Boid {
 
         return avoidanceForce;
 
-         */
-
-        let avoidanceForce = new Vector2d(0, 0);
-
-        obstacles.forEach(obstacle => {
-            if (obstacle.getPos().dst(this.getPos()) > 100) return;
-
-            const direction = obstacle.getPos().sub(this.getPos());
-            const angle = direction.angle(this.getVel());
-
-            if (0 < angle && angle < 60) {
-                avoidanceForce.add(this.getVel().rotate(60).norm().mul(5))
-            } else if (-60 < angle && angle < 0) {
-                avoidanceForce.add(this.getVel().rotate(-60).norm().mul(5))
-
-            }
-        });
-
-
-        return avoidanceForce;
     }
 }
